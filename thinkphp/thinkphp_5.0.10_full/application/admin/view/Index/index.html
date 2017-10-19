@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="__STATIC__/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<select id="sheng">
+    <option>请选择省</option>
+</select>
+<select id="shi">
+    <option>请选择市</option>
+</select><select id="qu">
+    <option>请选择区</option>
+</select>
+<script>
+    $(document).ready(function(){
+
+    show();
+    dataes();
+    areas();
+
+
+    });
+    function show() {
+        $.ajax(
+            {
+
+                url:"{:url('admin')}",
+                dataType:"json",
+                type: "post",
+                success: function (da) {
+
+                    for (var i = 0; i < da.length; i++) {
+                        $("#sheng").append("<option value=" + da[i].provinceid + ">" + da[i].province + "</option>");
+
+                    }
+
+                }
+
+                 })
+    }
+    function dataes() {
+        $("#sheng").change(function () {
+            var id=$("#sheng").val();
+            $.ajax(
+                {
+                    url: "{:url('shi')}",
+                    dataType: "json",
+                    type: "post",
+                    data:{id:id},
+                    success: function (date) {
+                        $("#shi").html("请选择市");
+                        for (var i = 0; i < date.length; i++) {
+                            $("#shi").append("<option value=" + date[i].cityid + ">" + date[i].city + "</option>");
+
+                        }
+
+                    }
+                })
+        })
+
+    }
+    function areas() {
+        $("#shi").change(function () {
+            var id=$("#shi").val();
+            $.ajax(
+                {
+                    url: "{:url('login')}",
+                    dataType: "json",
+                    type: "post",
+                    data:{id:id},
+                    success: function (date) {
+                        $("#qu").html("请选择区");
+                        for (var i = 0; i < date.length; i++) {
+                            $("#qu").append("<option value=" + date[i].areaid + ">" + date[i].area + "</option>");
+
+                        }
+
+                    }
+                })
+        })
+
+    }
+</script>
+</body>
+</html>
